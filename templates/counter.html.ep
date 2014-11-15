@@ -5,9 +5,11 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     </head>
     <body>
-        <div class="container">
+        <div style="text-align: center">
             <h1><%= $counter->{name} %></h1>
-            <p class="lead"><%= $counter->{count} %></p>
+            % my @colours = ('#966fd6', '#f0ad4e', '#b39eb5', '#77dd77', '#ff6961', '#fdfd96', '#aec6cf', '#cb99c9', '#779ecb', '#03c03c');
+            % my $colour = $colours[rand @colours];
+            <p style="font-size: 5em; background-color: <%= $colour %>"><%= $counter->{count} %></p>
             <form action="/count/<%= $counter->{id} %>" method="post">
                 <button class="btn btn-lg" type="submit"><%= $counter->{btntext} %></button>
             </form>
