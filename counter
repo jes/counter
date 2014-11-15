@@ -91,21 +91,3 @@ sub _generate_id {
     my $chars = join('', 'a'..'z', '0'..'9');
     return random_string_from($chars, 8);
 }
-
-__DATA__
-
-@@ index.html.ep
-Create a new counter?
-
-<form action="/new-counter" method="post">
-Name: <input type="text" name="name"><br>
-Button text: <input type="text" name="btntext"><br>
-<button type="submit">Go</button>
-</form>
-
-@@ counter.html.ep
-<h1><%= $counter->{name} %></h1>
-<%= $counter->{count} %>
-<form action="/count/<%= $counter->{id} %>" method="post">
-<button type="submit"><%= $counter->{btntext} %></button>
-</form>
