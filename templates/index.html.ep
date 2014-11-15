@@ -5,8 +5,14 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     </head>
     <body>
+        <div style="text-align: center">
+            <h1>counter.jes.xxx</h1>
+            <p style="font-size: 5em; background-color: <%= $colour %>"><%= $ncounters %></p>
+            <button class="btn btn-lg">counters created</button>
+        </div>
+
         <div class="container">
-            <h1>Create a counter?</h1>
+            <hr>
 
             <form action="/new-counter" method="post">
                 Name: <input class="form-control" type="text" name="name"><br>

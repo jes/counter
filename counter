@@ -22,6 +22,14 @@ get '/' => sub {
         push @rows, $r;
     }
     $self->stash(counters => \@rows);
+
+    my ($n) = app->db->selectrow_array(qq{
+        SELECT COUNT(*)
+        FROM counters
+    });
+    $self->stash(ncounters => $n);
+
+    $self->stash(colour => _random_colour());
     
     $self->render('index');
 };
@@ -71,6 +79,7 @@ get '/:id' => sub {
     die "no row" if !$row;
 
     $self->stash(counter => $row);
+    $self->stash(colour => _random_colour());
     $self->render('counter');
 };
 
@@ -90,4 +99,9 @@ app->start;
 sub _generate_id {
     my $chars = join('', 'a'..'z', '0'..'9');
     return random_string_from($chars, 8);
+}
+
+sub _random_colour {
+    my @colours = ('#966fd6', '#f0ad4e', '#b39eb5', '#77dd77', '#ff6961', '#fdfd96', '#aec6cf', '#cb99c9', '#779ecb', '#03c03c');
+    return $colours[rand @colours];
 }
