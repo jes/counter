@@ -1,0 +1,83 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use Mojolicious::Lite;
+
+get '/' => sub {
+    my ($self) = @_;
+    $self->render('index');
+};
+
+post '/new-counter' => sub {
+    my ($self) = @_;
+
+    app->db->do(qq{
+        INSERT INTO counters
+        (name, btntext, count, lastupdate)
+        VALUES
+        (?, ?, 0, NOW())
+    }, {}, scalar $self->param('name'), scalar $self->param('btntext'));
+
+    $self->redirect_to('/' . app->db->last_insert_id(undef, undef, undef, undef));
+};
+
+post '/count/:id' => sub {
+    my ($self) = @_;
+
+    app->db->do(qq{
+        UPDATE counters
+        SET count = count + 1
+        WHERE id = ?
+    }, {}, scalar $self->param('id'));
+
+    $self->redirect_to('/' . $self->param('id'));
+};
+
+get '/:id' => sub {
+    my ($self) = @_;
+
+    my $sth = app->db->prepare(qq{
+        SELECT *
+        FROM counters
+        WHERE id = ?
+    });
+    $sth->execute(scalar $self->param('id'));
+    my $row = $sth->fetchrow_hashref;
+
+    die "no row" if !$row;
+
+    $self->stash(counter => $row);
+    $self->render('counter');
+};
+
+plugin database => {
+    dsn => 'dbi:mysql:dbname=counter',
+    username => 'counter',
+    password => 'c0unt3r',
+    options => {
+        RaiseError => 1,
+        mysql_auto_reconnect => 1,
+    },
+};
+
+app->start;
+
+__DATA__
+
+@@ index.html.ep
+Create a new counter?
+
+<form action="/new-counter" method="post">
+Name: <input type="text" name="name"><br>
+Button text: <input type="text" name="btntext"><br>
+<button type="submit">Go</button>
+</form>
+
+@@ counter.html.ep
+<h1><%= $counter->{name} %></h1>
+<%= $counter->{count} %>
+<form action="/count/<%= $counter->{id} %>" method="post">
+<button type="submit"><%= $counter->{btntext} %></button>
+</form>
