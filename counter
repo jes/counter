@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 
+use Crypt::PRNG qw(random_string_from);
 use Mojolicious::Lite;
 
 get '/' => sub {
@@ -18,14 +19,15 @@ post '/new-counter' => sub {
         return;
     }
 
+    my $id = _generate_id();
     app->db->do(qq{
         INSERT INTO counters
-        (name, btntext, count, lastupdate)
+        (id, name, btntext, count, lastupdate)
         VALUES
-        (?, ?, 0, NOW())
-    }, {}, scalar $self->param('name'), scalar $self->param('btntext'));
+        (?, ?, ?, 0, NOW())
+    }, {}, $id, scalar $self->param('name'), scalar $self->param('btntext'));
 
-    $self->redirect_to('/' . app->db->last_insert_id(undef, undef, undef, undef));
+    $self->redirect_to("/$id");
 };
 
 post '/count/:id' => sub {
@@ -33,7 +35,7 @@ post '/count/:id' => sub {
 
     app->db->do(qq{
         UPDATE counters
-        SET count = count + 1
+        SET count = count + 1, lastupdate = NOW()
         WHERE id = ?
     }, {}, scalar $self->param('id'));
 
@@ -69,6 +71,11 @@ plugin database => {
 
 app->config(hypnotoad => {listen => ['http://*:9001']});
 app->start;
+
+sub _generate_id {
+    my $chars = join('', 'a'..'z', '0'..'9');
+    return random_string_from($chars, 8);
+}
 
 __DATA__
 
