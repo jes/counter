@@ -11,6 +11,8 @@
             <form action="/count/<%= $counter->{id} %>" method="post">
                 <button class="btn btn-lg" type="submit"><%= $counter->{btntext} %></button>
             </form>
+            <hr>
+            <a href="/<%= $counter->{id} %>">http://counter.jes.xxx/<%= $counter->{id} %></a></p>
         </div>
     </body>
 </html>
