@@ -13,6 +13,12 @@
                 Button text: <input class="form-control" type="text" name="btntext"><br>
                 <button class="btn" type="submit">Go</button>
             </form>
+
+            <hr>
+
+            % for my $c (@$counters) {
+                <a href="/<%= $c->{id} %>"><%= $c->{name} %></a><br>
+            % }
         </div>
     </body>
 </html>

@@ -8,6 +8,21 @@ use Mojolicious::Lite;
 
 get '/' => sub {
     my ($self) = @_;
+
+    my $sth = app->db->prepare(qq{
+        SELECT *
+        FROM counters
+        ORDER BY RAND()
+        LIMIT 10
+    });
+    $sth->execute;
+
+    my @rows;
+    while (my $r = $sth->fetchrow_hashref) {
+        push @rows, $r;
+    }
+    $self->stash(counters => \@rows);
+    
     $self->render('index');
 };
 
