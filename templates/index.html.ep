@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+    <head>
+        <title>counter.jes.xxx</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1>Create a counter?</h1>
+
+            <form action="/new-counter" method="post">
+                Name: <input class="form-control" type="text" name="name"><br>
+                Button text: <input class="form-control" type="text" name="btntext"><br>
+                <button class="btn" type="submit">Go</button>
+            </form>
+        </div>
+    </body>
+</html>

@@ -13,6 +13,11 @@ get '/' => sub {
 post '/new-counter' => sub {
     my ($self) = @_;
 
+    if (!$self->param('name') || !$self->param('btntext')) {
+        $self->redirect_to('/');
+        return;
+    }
+
     app->db->do(qq{
         INSERT INTO counters
         (name, btntext, count, lastupdate)
@@ -62,6 +67,7 @@ plugin database => {
     },
 };
 
+app->config(hypnotoad => {listen => ['http://*:9001']});
 app->start;
 
 __DATA__

@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+    <head>
+        <title>counter.jes.xxx - <%= $counter->{name} %></title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1><%= $counter->{name} %></h1>
+            <p class="lead"><%= $counter->{count} %></p>
+            <form action="/count/<%= $counter->{id} %>" method="post">
+                <button class="btn btn-lg" type="submit"><%= $counter->{btntext} %></button>
+            </form>
+        </div>
+    </body>
+</html>
