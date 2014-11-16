@@ -17,6 +17,7 @@
             <form action="/new-counter" method="post">
                 Name: <input class="form-control" type="text" name="name"><br>
                 Button text: <input class="form-control" type="text" name="btntext"><br>
+                URL id: <input class="form-control" type="text" name="urlid" value="<%= $urlid %>"><br>
                 <button class="btn" type="submit">Go</button>
             </form>
 

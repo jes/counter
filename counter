@@ -28,8 +28,8 @@ get '/' => sub {
         FROM counters
     });
     $self->stash(ncounters => $n);
-
     $self->stash(colour => _random_colour());
+    $self->stash(urlid => _generate_id());
     
     $self->render('index');
 };
@@ -42,7 +42,17 @@ post '/new-counter' => sub {
         return;
     }
 
-    my $id = _generate_id();
+    my $id = $self->param('urlid') || _generate_id();
+
+    my ($n) = app->db->selectrow_array(qq{
+        SELECT COUNT(*)
+        FROM counters
+        WHERE id = ?
+    }, {}, $id);
+    $self->redirect_to('/') if $n != 0;
+
+    $id = substr($id, 0, 32);
+
     app->db->do(qq{
         INSERT INTO counters
         (id, name, btntext, count, lastupdate)
