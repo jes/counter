@@ -29,6 +29,10 @@
             % for my $c (@$counters) {
                 <a href="/<%= $c->{id} %>"><%= $c->{name} %></a><br>
             % }
+
+            <hr>
+
+            <i><a href="http://jes.xxx">James Stanley</a></i>
         </div>
     </body>
 </html>
