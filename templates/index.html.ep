@@ -14,6 +14,9 @@
         <div class="container">
             <hr>
 
+            <p>This tool creates simple counters for anything. Set the counter name, button text and optionally
+                an ID for the URL, and you'll get a counter you can share immediately and increment at will.</p
+
             <form action="/new-counter" method="post">
                 Name: <input class="form-control" type="text" name="name"><br>
                 Button text: <input class="form-control" type="text" name="btntext"><br>
