@@ -42,7 +42,10 @@ post '/new-counter' => sub {
         return;
     }
 
-    my $id = $self->param('urlid') || _generate_id();
+    my $id = $self->param('urlid') || '';
+    $id =~ s/[^a-zA-Z0-9_.-]//g;
+    $id = substr($id, 0, 32);
+    $id ||= _generate_id();
 
     my ($n) = app->db->selectrow_array(qq{
         SELECT COUNT(*)
@@ -50,8 +53,6 @@ post '/new-counter' => sub {
         WHERE id = ?
     }, {}, $id);
     $self->redirect_to('/') if $n != 0;
-
-    $id = substr($id, 0, 32);
 
     app->db->do(qq{
         INSERT INTO counters
