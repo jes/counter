@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Crypt::PRNG qw(random_string_from);
+use Crypt::PRNG qw(rand random_string_from);
 use Mojolicious::Lite;
 
 get '/' => sub {
@@ -113,5 +113,5 @@ sub _generate_id {
 
 sub _random_colour {
     my @colours = ('#966fd6', '#f0ad4e', '#b39eb5', '#77dd77', '#ff6961', '#fdfd96', '#aec6cf', '#cb99c9', '#779ecb', '#03c03c');
-    return $colours[rand @colours];
+    return $colours[rand scalar @colours];
 }
